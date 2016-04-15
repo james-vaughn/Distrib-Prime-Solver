@@ -16,10 +16,10 @@ def makeSocket():
 	host_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	
 	host_info = []
-	with open(connection_info) as addr_info:
+	with open("connection_info") as addr_info:
 		host_info = addr_info.readlines()
 
-	port = host_info[1]
+	port = int(host_info[1])
 	try:
 		host_sock.bind( ('',port) )
 		return host_sock
@@ -32,9 +32,11 @@ if __name__ == "__main__":
 	host_sock = makeSocket()
 	host_sock.listen(NUM_CONNECTIONS)
 	
-	while True:
-		conn, addr = host_sock.accept()
-		host_sock.sendall("Hello to "+conn+":"+addr)
+	conn, addr = host_sock.accept()
+	print("Connection from "+addr[0]+":"+str(addr[1]))
+	
+	conn.send("Begin echoing".encode('utf-8'))
+
 	#l = possiblePrimeList()
 
 	#for i in range(10):

@@ -3,11 +3,11 @@ import socket
 def connectToHost(sock):
 	host_info = []
 
-	with open(connection_info) as addr_info:
+	with open("connection_info") as addr_info:
 		host_info = addr_info.readlines()
 
 	host_ip = host_info[0]
-	host_socket = host_info[1]
+	host_socket = int(host_info[1])
 
 	sock.connect( (host_ip,host_socket) )
 
