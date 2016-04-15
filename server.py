@@ -37,6 +37,9 @@ if __name__ == "__main__":
 	
 	conn.send("Begin echoing".encode('utf-8'))
 
+	while True:
+		msg = conn.recv(4096)
+		conn.send(msg)
 	#l = possiblePrimeList()
 
 	#for i in range(10):

@@ -15,4 +15,8 @@ if __name__ == "__main__":
 	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	connectToHost(sock)
 
-	print(sock.recv(4096))
+	print(sock.recv(4096).decode('utf-8'))
+	while True:
+		msg = input()
+		sock.send(msg.encode('utf-8'))
+		print(sock.recv(4096).decode('utf-8'))
