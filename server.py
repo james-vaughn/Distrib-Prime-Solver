@@ -1,5 +1,5 @@
 import socket
-
+from concurrent.futures import ThreadPoolExecutor
 
 NUM_CONNECTIONS = 5
 
@@ -27,19 +27,28 @@ def makeSocket():
 		print("FUCK: "+msg)
 			
 
+def echo(connSock):
+	connSock.send("Begin echoing".encode('utf-8'))
+
+	while True:
+		msg = connSock.recv(4096)
+		connSock.send(msg)
+	
+
 
 if __name__ == "__main__":
+	pool = ThreadPoolExecutor(max_workers=NUM_CONNECTIONS)
+	
 	host_sock = makeSocket()
 	host_sock.listen(NUM_CONNECTIONS)
 	
-	conn, addr = host_sock.accept()
-	print("Connection from "+addr[0]+":"+str(addr[1]))
+	while True:	
+		conn, addr = host_sock.accept()
+		print("Connection from "+addr[0]+":"+str(addr[1]))
 	
-	conn.send("Begin echoing".encode('utf-8'))
+		pool.submit(echo,conn)
 
-	while True:
-		msg = conn.recv(4096)
-		conn.send(msg)
+
 	#l = possiblePrimeList()
 
 	#for i in range(10):
